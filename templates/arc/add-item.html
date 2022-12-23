@@ -1,0 +1,50 @@
+{% load widget_tweaks %}
+
+{% if success %}
+  <div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">File Uploaded.</h4>
+    <p>The file has been uploaded successfully.</p>
+  </div>
+{% else %}
+
+{% if form.errors %}
+
+  {% for field in form %}
+    {% for error in field.errors %}
+      <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+      </div>
+    {% endfor %}
+  {% endfor %}
+
+  {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+      <strong>{{ error|escape }}</strong>
+    </div>
+  {% endfor %}
+
+{% endif %}
+
+<form id="item-form" method="post" action="{% url 'itr' itr.course.code itr.year itr.sem_name.lower %}add/" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="form-group">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <label for="{{ field.id_for_label }}">
+              {{ field.label }}
+            </label>
+          </div>
+          <div class="col">
+            <a tabindex="0" role="button" type="button" class="btn btn-primary btn-circle-sm" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="{{ field.help_text }}"><span class="oi oi-info"></span></a>
+          </div>
+        </div>
+      </div>
+      {{ field }}
+    </div>
+  {% endfor %}
+  <button class="btn btn-primary" type="submit">Upload</button>
+</form>
+
+{% endif %}

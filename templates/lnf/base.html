@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/awsm.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/main.css' %}">
+
+    <title>
+        {% block title %}{% endblock %} | Lost and Found
+    </title>
+
+
+
+</head>
+
+<body>
+    <header>
+        <h1>Lost and Found</h1>
+        <p>
+            A place for posting and claiming items lost/found in NISER.
+
+        <nav>
+            <ul>
+                <li><a href="/lnf/">All</a></li>
+                <li><a href="/lnf/found/">Found</a></li>
+                <li><a href="/lnf/lost/">Lost</a></li>
+                <li><a href="/lnf/add/">Add Item</a></li>
+            </ul>
+
+        </nav>
+
+        {% comment %} <form action="{% url 'lnf:search' %}" method="GET">
+            <input type="text" name="keyword" placeholder="Search the database">
+        </form> {% endcomment %}
+
+    </header>
+
+    <main>
+        {% if messages %}
+        <ul class="messages">
+
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                {{ message }}
+            </li>
+
+            {% endfor %}
+        </ul>
+
+        {% endif %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <footer>
+        NISER Coding Club
+    </footer>
+
+    <script src="{% static 'scripts/main.js' %}"></script>
+
+    {% block js %} {% endblock %}
+
+</body>
+
+</html>

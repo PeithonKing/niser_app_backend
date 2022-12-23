@@ -1,0 +1,57 @@
+{% extends 'my_user/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}{{ sch.abbr.upper }}{% endblock %}
+{% block l3h %}{{ sch }}{% endblock %}
+
+{% block content %}	
+
+  {% if course_list %}
+    <ul class="list-group">
+      {% for c in course_list %}
+        <li class="list-group-item"><a href="{% url 'course' c.code %}">{{ c }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no courses.</p>
+  {% endif %}	
+
+  {% if user.is_authenticated %}
+    <br>
+    <button type="button" id="course-modal-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#course-modal-inner">
+      <span class="oi oi-plus"> </span>  Add
+    </button>
+    <br>
+    <div id="course-modal">
+      <div class="modal fade" id="course-modal-inner" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="course-modal-header">
+                Add a new course to {{ sch.abbr.upper }}
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <div class="modal-body" id="course-modal-body">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+
+            <div class="modal-footer" id="course-modal-footer">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock %}
+
+{% block js %}
+  <script type="text/javascript" src="{% static 'main/js/school.js' %}"></script>
+{% endblock %}

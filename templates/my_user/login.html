@@ -1,0 +1,41 @@
+{% extends './base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Login{% endblock %}
+{% block h3 %}Login{% endblock %}
+
+{% block content %}
+
+  {% if form.errors %}
+    {% for field in form %}
+      {% for error in field.errors %}
+        <div class="alert alert-danger">
+          <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endfor %}
+
+    {% for error in form.non_field_errors %}
+      <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{field|add_class:'form-control'}}
+      </div>
+      <br>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Login</button>
+  </form>
+  <br>
+  <p>
+  Forgot your password? <a href="{% url 'reset_password' %}"> Reset Password</a>.
+  Do not have an account? <a href="{% url 'signup' %}"> Signup here</a>.
+  </p>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NISER Archive - {{ item.name }}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="{% static 'main/css/file.css' %}">
+    </head>
+    <body>
+    <div id="menu">
+      <header>
+        <h2><a href="/arc">NISER Archive</a></h2>
+        <strong>{{ item.name }}</strong><br>
+        <div id="download">
+          <span class="float-left"><small>({{ item.fl }})</small></span>
+          <span class="float-right"><a href="{{ item.fl.url }}">⇣ Download</a></span><br>
+        </div>
+      </header>
+      <hr>
+      <div id="link">
+        <a href="{% url 'itr' item.itr.course.code item.itr.year item.itr.sem_name.lower %}">{{ item.itr }}</a>
+      </div>
+      {% if item.desc %}
+        <div id="description">
+          <strong>Description:</strong> {{ item.desc }}
+        </div>
+      {% endif %}
+      <div id="op">
+        <strong>Uploaded by:</strong> <a href="{% url 'user' item.op.id %}">{{ item.op.name }}</a>
+      </div>
+    </div>
+
+    <div id="article">
+        <iframe src="{{ item.fl.url }}" id="pdf"></iframe>
+    </div>
+    </body>
+</html>

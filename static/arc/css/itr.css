@@ -1,0 +1,23 @@
+#id_text {
+  height: 5rem;
+}
+
+.comment-hr {
+  margin-top: -1px;
+  margin-bottom: 0;
+}
+
+.del-container {
+  text-align: right;
+}
+
+#comment-help {
+  font-size: 0.7em;
+}
+
+#item-progress-bar {
+}
+
+#help-container {
+  margin-bottom: 0.4rem;
+}

@@ -1,0 +1,7 @@
+Greetings!
+
+Visit this URL to verify your email address: {{ dmn }}/auth/verify/{{ user.pk }}/{{ vid }}
+
+Thanks.
+
+~ NISER Coding Club

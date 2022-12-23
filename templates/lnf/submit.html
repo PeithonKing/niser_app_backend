@@ -1,0 +1,21 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block title %}
+Add Item
+{% endblock %}
+
+{% block content %}
+
+<h3>Add Item</h3>
+
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Save">
+</form>
+
+{% endblock %}
+
+{% block js %}
+  <script src="{% static 'scripts/add.js' %}"></script>
+{% endblock %}
