@@ -18,13 +18,6 @@ SERVICE_JSON = '<path to your firebase service json>.json'  # for example view .
 
 NOTIFICATION_TOKEN_FILE = "tokens.json"
 
-# Celery settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'  # <...> might need to change
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'  # <...> might need to change
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = CELERY_RESULT_SERIALIZER
-
 import firebase_admin
 # put your own project name below (ofcourse after you create one)
 access_token_object = firebase_admin.initialize_app().credential.get_access_token()

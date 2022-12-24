@@ -13,7 +13,7 @@ from .models import Profile
 from .helper import *
 
 from niser_app.local_settings import *
-from .daily_tasks import my_send_email
+from .daily_tasks import My_Send_Email
 
 
 # def error404(request, exception):
@@ -79,11 +79,11 @@ def signup(request):
             profile.save()
 
             # Send Verification email
-            my_send_email.delay(
+            My_Send_Email(
                 to=[user.email],
                 subject='Verification of email address - NISER Archive',
                 message=render_to_string('my_user/verify.txt', {'user': user, 'vid': uvid, 'dmn': DOMAIN}),
-            )
+            ).start()
             # print(f"\n\nVerification email has been sent. This is the verification link: {DOMAIN}/auth/verify/{user.pk}/{uvid}\n")
 
             messages.success(request, "Thank you for signing up. We have sent you a verification email.")
@@ -105,11 +105,11 @@ def verify(request, uid, vid):
         
         # Send Welcome email
         # print(f"\n\nWelcome email has been sent.")
-        my_send_email.delay(
+        My_Send_Email(
             to=[user.email],
             subject=f'Welcome {user.name}!',
             message=render_to_string('my_user/welcome.txt', {'user': user, 'dmn': DOMAIN}),
-        )
+        ).start()
         
         return render(request, 'my_user/index.html')
     else:

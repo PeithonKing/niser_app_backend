@@ -7,7 +7,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('', index_view, name='home'),
+    path('', index_view, name='arc_home'),
 
 	# Schools Views
     path('s/<abbrev>/', school_view, name='school'),

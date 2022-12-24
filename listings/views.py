@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.contrib import messages
-from my_user.daily_tasks import my_send_email
+from my_user.daily_tasks import My_Send_Email
 from django.template.loader import render_to_string
 
 from niser_app.local_settings import *
@@ -29,8 +29,11 @@ def submit(request):
             listing.created = now()
             listing.save()
 
-            message = render_to_string("listings/list_feedback.txt", {"DOMAIN": DOMAIN, "name": request.user.name, "id": listing.id})
-            my_send_email([request.user.email], message, 'New Listing Submitted')
+            My_Send_Email(
+                to=[request.user.email],
+                subject='New Listing Submitted',
+                message=render_to_string("listings/list_feedback.txt", {"DOMAIN": DOMAIN, "name": request.user.name, "id": listing.id}),
+            ).start()
             
             return redirect('/listings')
     else:
