@@ -24,6 +24,7 @@ class ListingType(models.Model):
 
 
 class Listing(models.Model):
+    seller = models.ForeignKey("my_user.Profile", on_delete = models.CASCADE, verbose_name = 'Owner')
     title = models.CharField(max_length=200, verbose_name = 'Listing Title')
     category = models.ForeignKey(ListingType, on_delete = models.CASCADE, verbose_name = 'Category')
     price = models.IntegerField(verbose_name = 'Price (in Rupees)')
@@ -32,7 +33,6 @@ class Listing(models.Model):
     description = models.TextField(verbose_name = 'Description')
     photo = models.ImageField(upload_to='static/listings/pics')
     sold = models.BooleanField(default = False)
-    seller = models.ForeignKey("my_user.Profile", on_delete = models.CASCADE, verbose_name = 'Owner')
     created = models.DateTimeField(default = now)
 
     class Meta:

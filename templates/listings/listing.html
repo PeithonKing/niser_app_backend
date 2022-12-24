@@ -1,8 +1,6 @@
 {% extends './base.html' %}
 
-{% block title %}
-{{ listing }}
-{% endblock %}
+{% block title %}{{ listing }}{% endblock %}
 
 {% block content %}
 <div class="listingDetails">
@@ -33,23 +31,75 @@
 
 			<tr>
 				<th>Listed by:&emsp;</th>
-				<td>{{ listing.op }}</td>
+				<td>{{ listing.seller.user.name }}</td>
 			</tr>
 
 			<tr>
 				<th>Email:&emsp;</th>
-				<td><a href="mailto:{{ listing.email }}">{{ listing.email }}</a></td>
-			</tr>
-
-			<tr>
-				<th>Phone:&emsp;</th>
-				<td><a href="tel:{{ listing.phone }}">{{ listing.phone }}</a></td>
+				<td><a href="mailto:{{ listing.seller.user.email }}">{{ listing.seller.user.email }}</a></td>
 			</tr>
 		</table>
 		<br>
 		<strong>Description:&ensp;</strong>
 		{{ listing.description }}
 		<br>
+		<br>
+
+		{% if user and not listing.sold %}
+			{% if listing.seller.user == user %}
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmsold">
+				Mark as Sold
+			</button>
+			{% else %}
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmbuyrequest">
+				Send Buy Request
+			</button>
+			{% endif %}
+		{% endif %}
+
 	</aside>
 </div>
+
+
+<div class="modal fade" id="confirmbuyrequest" tabindex="-1" aria-labelledby="confirmbuyrequestLabel"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="confirmbuyrequestLabel">Send buy request email?</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want us to send an email on your behalf to 
+					<strong>{{ listing.seller.user.name }}</strong> regarding buying of the listing headed <strong>{{ listing }}</strong>?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<a href="/listings/buy_request/{{ listing.pk }}"><button type="button" class="btn btn-primary">Send
+						Email</button></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="confirmsold" tabindex="-1" aria-labelledby="confirmsoldLabel"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="confirmsoldLabel">Mark as Sold?</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to mark this listing as sold?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<a href="/listings/mark_sold/{{ listing.pk }}"><button type="button" class="btn btn-primary">Mark Sold</button></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 {% endblock %}

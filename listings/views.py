@@ -1,8 +1,5 @@
 # from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
 from django.contrib import messages
 from my_user.daily_tasks import My_Send_Email
 from django.template.loader import render_to_string
@@ -20,7 +17,7 @@ def submit(request):
     if request.user is None or not request.user.is_authenticated:
         messages.error(request, 'You must be logged in to submit a listing.')
         return redirect('/listings')
-    
+
     if request.method == 'POST':
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
@@ -39,10 +36,47 @@ def submit(request):
     else:
         form = ListingForm()
     return render(request, 'listings/submit.html', {'form': form})
+    
+def listings_view(request, pk):
+    listing = Listing.objects.get(pk=pk)
+    return render(request, 'listings/listing.html', {'listing':listing, "user":request.user if request.user.is_authenticated else None})
 
-class ListingDetail(DetailView):
-    model = Listing
-    template_name = 'listings/listing.html'
+def mark_sold(request, pk):
+    listing = Listing.objects.get(pk=pk)
+    if listing.sold:
+        messages.error(request, 'Listing already marked as sold.')
+        return redirect('/listings')
+    if request.user.is_authenticated:
+        if listing.seller == request.user.profile:
+            listing.sold = True
+            listing.save()
+            messages.success(request, 'Listing marked as sold')
+            My_Send_Email(
+                to=[listing.seller.user.email],
+                subject='Listing marked Sold',
+                message=render_to_string("listings/marked_sold_email.txt", {"DOMAIN": DOMAIN, "user": request.user, "listing": listing})
+            ).start()
+            return redirect('/listings')
+    messages.error(request, 'Only the person who submitted the listing can mark it as sold. If you are the same person, try logging in through the same account.')
+    return redirect('/listings')
+
+def buy_request(request, pk):
+    if request.user.is_authenticated:
+        listing = Listing.objects.get(pk=pk)
+        if listing.seller != request.user.profile:
+            My_Send_Email(
+                to = [listing.seller.user.email],
+                message=render_to_string("listings/buy_request.txt", {"seller": listing.seller.user.name, "buyer": request.user.name, "listing": listing, "DOMAIN": DOMAIN}),
+                subject= f"Buy Request for your listing: {listing}",
+                cc = [request.user.email]
+            ).start()
+            messages.success(request, 'Request sent.')
+        else:
+            messages.error(request, 'You cannot send a buy request to yourself.')
+    else:
+        messages.error(request, 'Login to send a buy requests')
+    return redirect('/listings')
+
 
 # def search(request):
 #     if request.method == 'GET':
@@ -64,6 +98,6 @@ class ListingDetail(DetailView):
 #                 query)).order_by(*sort_by)
 
 #             return render(request, 'results.html',
-#                     {'search_string': search_string, 'listings': listings})
+#                     {'search_string': search_string, 'listings': [listing for listing in listings if not listing.sold]})
 
 #     return HttpResponseRedirect('/')

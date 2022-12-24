@@ -6,11 +6,12 @@ from time import sleep
 import threading
 
 class My_Send_Email(threading.Thread):
-    def __init__(self, to: list, message: str, subject: str, sender: str = DEFAULT_FROM_EMAIL):
+    def __init__(self, to: list, message: str, subject: str, sender: str = DEFAULT_FROM_EMAIL, cc: list = None):
         self.to = to
         self.message = message
         self.subject = subject
         self.sender = sender
+        self.cc = cc
         super().__init__()
 
     def run(self):
@@ -22,7 +23,7 @@ class My_Send_Email(threading.Thread):
             subject (str): The subject of the email.
             sender (str, optional): The sender name of the email. Defaults to DEFAULT_FROM_EMAIL from local settings.
         """
-        msg = EmailMultiAlternatives(self.subject, self.message, self.sender, self.to)
+        msg = EmailMultiAlternatives(self.subject, self.message, self.sender, self.to, cc=self.cc)
         msg.send()
 
 
