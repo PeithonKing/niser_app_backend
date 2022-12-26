@@ -1,17 +1,9 @@
-amqp==5.1.1
-asgiref==3.5.2
-billiard==3.6.4.0
+asgiref==3.6.0
 CacheControl==0.12.11
 cachetools==5.2.0
-celery==5.2.7
 certifi==2022.12.7
 cffi==1.15.1
 charset-normalizer==2.1.1
-click==8.1.3
-click-didyoumean==0.3.0
-click-plugins==1.1.1
-click-repl==0.2.0
-colorama==0.4.6
 cryptography==38.0.4
 Django==4.1.4
 django-authtools==2.0.0
@@ -31,12 +23,10 @@ grpcio==1.51.1
 grpcio-status==1.51.1
 httplib2==0.21.0
 idna==3.4
-kombu==5.2.4
 msgpack==1.0.4
 numpy==1.24.0
 pandas==1.5.2
 Pillow==9.3.0
-prompt-toolkit==3.0.36
 proto-plus==1.22.1
 protobuf==4.21.12
 psycopg2==2.9.5
@@ -54,5 +44,3 @@ sqlparse==0.4.3
 tzdata==2022.7
 uritemplate==4.1.1
 urllib3==1.26.13
-vine==5.0.0
-wcwidth==0.2.5
