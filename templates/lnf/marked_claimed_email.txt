@@ -1,0 +1,8 @@
+Hi {{ user.name }}!
+
+Your {{ item }} has been succesfully marked as {{verb}}. To undo this action, kindly reply to this email. Your item will no longer be shown on the website or come in search results. However, you can still view your item by visiting the following link:
+
+{{ DOMAIN }}/lnf/item/{{ item.id }}
+
+
+~ NISER Coding Club

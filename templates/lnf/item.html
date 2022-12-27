@@ -11,22 +11,93 @@
 <br>
 
 {% if item.image %}
-  <br><img src={{ item.image.url }}><br>
+<br><img src={{ item.image.url }}><br>
 {% else %}
-  <p>[image not uploaded]</p>
+<p>[image not uploaded]</p>
 {% endif %}
 
 
 <dl>
-  <dt>Description</dt>
-  <dd>{{ item.desc }}</dd>
+    <dt>Description:</dt>
+    <dd>{{ item.desc }}</dd>
 
-  <dt>{{ item.kind }} By</dt>
-  <dd>{{ item.submitter }}</dd>
-  
-  <dt>Contact</dt>
-  <dd>{{ item.email }}</dd>
+    <dt>Category:</dt>
+    <dd>{{ item.category }}</dd>
+
+    <dt>{{ item.kind }} By:</dt>
+    <dd>{{ item.submitter }} near {{ item.location }} on {{ item.date }}. </dd>
+
+    <dt>Contact:</dt>
+    <dd>{{ item.submitter.user.email }}</dd>
+
+
+
+    {% if user and not item.claimed %}
+    {% if item.submitter == user.profile %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Claimed">
+        Mark as {% if kind == "Lost" %}Found{% else %}Claimed{% endif %}
+    </button>
+    {% else %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Request">
+        {% if kind == "Lost" %}Found{% else %}Lost{% endif %} this item?
+    </button>
+    {% endif %}
+    {% endif %}
 
 </dl>
+
+
+
+
+
+
+<div class="modal fade" id="Claimed" tabindex="-1" aria-labelledby="ClaimedLabel"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="ClaimedLabel">Mark as {% if kind == "Lost" %}Found{% else %}Claimed{% endif %}?</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to mark this item as {% if kind == "Lost" %}Found{% else %}Claimed{% endif %}?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<a href="/lnf/mark_claimed/{{ item.pk }}"><button type="button" class="btn btn-primary">Mark {% if kind == "Lost" %}Found{% else %}Claimed{% endif %}</button></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="Request" tabindex="-1" aria-labelledby="RequestLabel"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="RequestLabel">Send email to {{item.submitter.user.name}}?</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+                {% if kind == "Lost" %}
+                <p>Are you sure you want us to send an email on your behalf to 
+                    <strong>{{ item.submitter.user.name }}</strong> mentioning that you have found this item?</p>
+                {% else %}
+                <p>Are you sure you want us to send an email on your behalf to 
+                    <strong>{{ item.submitter.user.name }}</strong> mentioning that this item belongs to you?</p>
+                {% endif %}
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<a href="/lnf/return_request/{{ item.pk }}"><button type="button" class="btn btn-primary">Send Email</button></a>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 {% endblock %}

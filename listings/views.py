@@ -39,7 +39,7 @@ def submit(request):
     
 def listings_view(request, pk):
     listing = Listing.objects.get(pk=pk)
-    return render(request, 'listings/listing.html', {'listing':listing, "user":request.user if request.user.is_authenticated else None})
+    return render(request, 'listings/listing.html', {'listing':listing, "user":request.user if request.user!=None or request.user.is_authenticated else None})
 
 def mark_sold(request, pk):
     listing = Listing.objects.get(pk=pk)
@@ -57,7 +57,7 @@ def mark_sold(request, pk):
                 message=render_to_string("listings/marked_sold_email.txt", {"DOMAIN": DOMAIN, "user": request.user, "listing": listing})
             ).start()
             return redirect('/listings')
-    messages.error(request, 'Only the person who submitted the listing can mark it as sold. If you are the same person, try logging in through the same account.')
+    messages.error(request, 'Only the person who submitted the listing can mark it as sold.')
     return redirect('/listings')
 
 def buy_request(request, pk):

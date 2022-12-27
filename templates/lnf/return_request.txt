@@ -1,0 +1,8 @@
+Hi {{ to }}!
+
+{{message}}
+
+You guys can carry on the discussion in this thread (reply all). After this item has been exchanged, please update the status of the item to Claimed following this link: {{ DOMAIN }}/lnf/mark_claimed/{{ item.id }}
+
+
+~ NISER Coding Club

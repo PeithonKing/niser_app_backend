@@ -9,24 +9,22 @@ class Item(models.Model):
             verbose_name = 'Lost/Found')
     location = models.CharField(max_length = 200)
 
-    date = models.DateField(default = now)
+    date = models.DateField(default = now, verbose_name = 'Lost on')
     created = models.DateTimeField(default = now)
 
     category = models.CharField(max_length = 200, verbose_name='Category')
     desc = models.TextField(verbose_name = 'Description of the Item')
-    image = models.ImageField(upload_to='images', blank = True, null = True)
+    image = models.ImageField(upload_to='static/lnf/pics', blank = True, null = True)
     claimed = models.BooleanField(default = False)
 
     submitter = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    email = models.EmailField(verbose_name = 'Your Email Address')
 
     class Meta:
         ordering = ['-created', '-date']
 
     def __str__(self):
-        return (self.kind + '. ' + str(self.category)
-                          + '. ' + self.location + '. '
-                          + self.date.strftime("%a, %d %b %Y")) + '.'
+        return f"{self.kind} {self.category} at {self.location} on {self.date.strftime('%a, %d %b %Y')}"
+        # return (self.kind + '. ' + str(self.category) + '. ' + self.location + '. ' + self.date.strftime("%a, %d %b %Y")) + '.'
     def name(self):
         return self.__str__()
 

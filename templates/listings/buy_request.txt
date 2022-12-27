@@ -2,7 +2,7 @@ Hi {{ seller }}!
 
 {{ buyer }} has shown interest in buying your listing headed {{ listing }}.
 
-You guys can carry on the discussion in this thread (reply all). If you guys agree on a deal, please update the status of the listing to <strong>Sold</strong> following this link: {{ DOMAIN }}/listings/mark_sold/{{ listing.id }}
+You guys can carry on the discussion in this thread (reply all). If you guys agree on a deal, please update the status of the listing to Sold following this link: {{ DOMAIN }}/listings/mark_sold/{{ listing.id }}
 
 
 ~ NISER Coding Club
