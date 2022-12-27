@@ -10,5 +10,5 @@ urlpatterns = [
     path('lost/', lost_items, name = 'lnf-lost'),
     path('item/<int:pk>', ItemDetail.as_view(), name = 'lnf-item'),
     path('add/', submit_view, name = 'lnf-add'),
-    # path('search/', search, name = 'lnf-search'),
+    path('search/', search, name = 'lnf-search'),
 ]# + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

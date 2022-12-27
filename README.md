@@ -1,3 +1,5 @@
+<!-- Ignore #MD031 #MD010 -->
+
 # Things to Remember Before Deploying
 
 - [ ] Verify info in [`local_settings.py`](local_settings.py) also do not forget to put the proper name of the app as the DEFAULT_FROM_EMAIL
@@ -8,8 +10,6 @@
 - [ ] Search in lnf, listings
 - [ ] Uncomment search in the pages in templates folder (lnf, listings)
 - [ ] add 404 and 500 pages
-
-
 
 # Steps to Develop
 
@@ -23,7 +23,7 @@ Hope you have flutter installed and flutter doctor says all fine. If not, you ca
 	```bash
 	dart pub global activate flutterfire_cli
 	```
-	you can get these steps by following the following steps: 
+	you can get these steps by following the following steps:
 	**Go to your app, -> settings button beside Project Overview, -> project settings, -> general -> Under `your apps`, you have to make a new app for flutter (click on the flutter icon)**, and follow the steps along.
 	Then, at the root of your Flutter project directory, run this command:
 	```bash
@@ -33,7 +33,7 @@ Hope you have flutter installed and flutter doctor says all fine. If not, you ca
 4. If you have followed the steps, as you will click on `continue to console`, you will see that an app has been created. For your informaton, the app was not created by you clicking on the website, the app was created by running the commands mention above. Now you need to add the firebase configuration to the app. For that, you need to download the `google-services.json` file from the firebase console. You can find that in the app you you have created. Finally move the file to the `android/app` directory of your Flutter project.
 5. Next you have to download the key file for the service account from the firebase console. You can find that in the
 	**project settings -> Service Accounts -> Firebase Admin SDK -> Python -> Generate new Private key**.
-6. **Now you should complete the [next part (setup django backend)](#setup-django-backend). After completing that return here to complete this step.**
+6. **Now you should complete the [next part (setup django backend)](#setup-django-project). After completing that return here to complete this step.**
 	- Move the key file to the root directory of the Django project.
 	- make a new environment variable named `GOOGLE_APPLICATION_CREDENTIALS` and set it to the path+name of the key file. Now as this file has already been kept in the root directory of your django project, the path will be something like this:
 	```bash
@@ -102,7 +102,7 @@ After completing upto this step, you can go back to the [previous part (setting 
 	python manage.py runserver <your_local_ip>:<port_number>  # same as you have put in the local_settings.py file
 	```
 11. Open a browser and see if the server is running by going to the following url:
-	```
+	```url
 	http://<your_local_ip>:<port_number>/admin
 	```
 	If you see the admin page, then you have successfully setup the django project. If you don't see the admin page, then you have done something wrong. Please check the steps again and try to fix the error. If you are still unable to fix the error, then please open an issue in the github repository.

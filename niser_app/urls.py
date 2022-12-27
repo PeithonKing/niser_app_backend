@@ -22,5 +22,6 @@ urlpatterns = [
     path("lnf/", include("lnf.urls")),
     path("arc/", include("arc.urls")),
     path("listings/", include("listings.urls")),
+    path("timetable/", include("timetable.urls")),
     # path("canteen_menu/", include("canteen_menu.urls")),
 ]

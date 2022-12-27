@@ -1,8 +1,10 @@
 templates/ref
-auth/__pycache__
+__pycache__
 *.vscode*
 *.pyc
 appnotifications-28b81-firebase-adminsdk-3z2bb-5b63e9220a.json
 initials.svg
 tokens.json
 niser_app/local_settings.py
+
+*/migrations/

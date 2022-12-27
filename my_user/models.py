@@ -4,6 +4,22 @@ from authtools.models import User
 from django.utils import timezone
 
 
+gender_choices = [
+    ("M", "Male"),
+    ("F", "Female"),
+    ("O", "Others"),
+    ("---", "---")
+]
+
+program_choices = [
+    ("M.Sc", "M.Sc"),
+    ("Ph.D", "Ph.D"),
+    ("PostDoc", "PostDoc"),
+    ("Others", "Others"),
+    ("---", "---"),
+]
+
+
 class School(models.Model):
     abbr = models.CharField(max_length = 5)  # abbreviation of the school
     name = models.CharField(max_length = 256)  # full name of the school
@@ -11,6 +27,11 @@ class School(models.Model):
 
     def __str__(self):
         return self.name + ' ('+ self.abbr.upper() + ')'
+
+class Batch(models.Model):
+    name = models.IntegerField()  # last two digits of the year of joining
+    def __str__(self):
+        return "B" + str(self.name)
 
 class Course(models.Model):
     op = models.ForeignKey("Profile", on_delete=models.SET_NULL, null=True)  # person who suggested the opening of the course
@@ -55,25 +76,25 @@ class Profile(models.Model):
     # 	7. The school the user is from
     school = models.ForeignKey(School, blank=True, null=True, on_delete=models.SET_NULL)
     # 	8. The batch the user is from
-    batch = models.SmallIntegerField('Batch', blank=True, null=True)
+    batch = models.ForeignKey(Batch, blank=True, null=True, on_delete=models.SET_NULL)
     # 	9. The program the user is in (Int. MSc/ PhD/ etc.)
-    prog = models.CharField('Program', max_length=128, blank=True, default='')
+    prog = models.CharField('Program', choices=program_choices, max_length=16, blank=True, default='')
     # 	10. About the user
     about = models.TextField('About', max_length=2048, blank=True, default='')
     # 	11. The karma of the user, which is not used I guess
     karma = models.IntegerField(default=0)
     #   12. The Gender of the user
-    gender = models.CharField(max_length=16, choices=[("M", "Male"), ("F", "Female"), ("O", "Others"), ("---", "---")], default="---")
-
-
-    # NISER CANTEEN MENU
-    # ... features/fields related to canteen menu ...
-    fav_foods = models.ManyToManyField("canteen_menu.FoodItem", blank=True)
+    gender = models.CharField(max_length=16, choices=gender_choices, default="---")
 
 
     # NISER TIMETABLE
     # ... features/fields related to timetable ...
     courses = models.ManyToManyField("Course", blank=True)
+
+
+    # NISER CANTEEN MENU
+    # ... features/fields related to canteen menu ...
+    fav_foods = models.ManyToManyField("canteen_menu.FoodItem", blank=True)
 
 
     # NISER LISTINGS

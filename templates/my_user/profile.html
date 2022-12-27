@@ -1,0 +1,74 @@
+{% extends './base.html' %}
+
+{% block title %}Profile of {{ user.name }}{% endblock %}
+
+{% block content %}
+	<h1>Profile of {{ user.name }}</h1>
+	<p>This is all the information we have stored about you.</p>
+	<p>*starred items cannot be displayed due to security reasons.</p>
+
+	<table class="table table-striped">
+		<tr>
+			<th>Field</th>
+			<th>Value</th>
+		</tr>
+		<tr>
+			<td>Email:</td>
+			<td>{{ user.email }}</td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td>*</td>
+			<!-- <td>{{user.password}}</td> -->
+		</tr>
+		<tr>
+			<td>Profile Picture:</td>
+			<td> <img src="{{ user.profile.dp }}" alt="User Profile Picture" width="150px"> </td>
+		</tr>
+		<tr>
+			<td>Virtual ID:</td>
+			<td>*</td>
+		</tr>
+		<tr>
+			<td>Joining Date and Time:</td>
+			<td>{{ user.profile.joined }}</td>
+		</tr>
+		<tr>
+			<td>School:</td>
+			<td>{{ user.profile.school }}</td>
+		</tr>
+		<tr>
+			<td>Batch:</td>
+			<td>{{ user.profile.batch }}</td>
+		</tr>
+		<tr>
+			<td>Program:</td>
+			<td>{{ user.profile.prog }}</td>
+		</tr>
+		<tr>
+			<td>About:</td>
+			<td>{{ user.profile.about }}</td>
+		</tr>
+		<tr>
+			<td>Karma:</td>
+			<td>{{ user.profile.karma }}</td>
+		</tr>
+		<tr>
+			<td>Gender:</td>
+			<td>{{ user.profile.gender }}</td>
+		</tr>
+		<tr>
+			<td>Favourite Food:</td>
+			<td>{% for food in user.profile.fav_foods.all %}{{food}}, {% endfor %}</td>
+		</tr>
+		<tr>
+			<td>Courses:</td>
+			<td>{% for course in user.profile.courses.all %}{{course}}, {% endfor %}</td>
+		</tr>
+ 	</table>
+<br>
+	<a href="/edit_profile" class="btn btn-primary">Edit Profile</a>
+<br>
+<br>
+
+{% endblock %}

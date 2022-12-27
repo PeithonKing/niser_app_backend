@@ -11,11 +11,11 @@ Add Item
 
 <form method="post" enctype="multipart/form-data">{% csrf_token %}
   {{ form.as_p }}
-  <input type="submit" value="Save">
+  <input type="submit" value="Submit">
 </form>
 
 {% endblock %}
 
 {% block js %}
-  <script src="{% static 'scripts/add.js' %}"></script>
+  <script src="{% static '/lnf/scripts/add.js' %}"></script>
 {% endblock %}

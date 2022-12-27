@@ -1,9 +1,10 @@
-# from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
+from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
+from django.contrib import messages
 
 from .forms import *
 from .models import *
@@ -27,28 +28,40 @@ class ItemDetail(DetailView):
     template_name = 'lnf/item.html'
 
 def submit_view(request):
-    form = ItemForm
-    return render(request, 'lnf/submit.html', {'form': form})
+    if not request.user or not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to submit an item in Lost and Found")
+        return redirect("/auth/login")
 
-# def search(request):
-#     if request.method == 'GET':
-#         form = SearchForm(request.GET)
-#         if form.is_valid():
-#             search_string = form.cleaned_data['keyword']
+    if request.method == 'GET':
+        form = ItemForm
+        return render(request, 'lnf/submit.html', {'form': form})
+    
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.submitter = request.user
+            item.save()
+            return redirect('/lnf')
+        else:
+            return render(request, 'lnf/submit.html', {'form': form})
+    
 
-#             words = search_string.lower().split(' ')
+def search(request):
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            search_string = form.cleaned_data['keyword']
+            words = search_string.lower().split(' ')
+            vector = SearchVector('kind', 'location', 'category', 'desc', 'submitter')
+            query = SearchQuery(words[0])
+            for word in words[1:]:
+                query = query | SearchQuery(word)
 
-#             vector = SearchVector('kind', 'location', 'category',
-#                         'desc', 'submitter')
+            items = Item.objects.annotate(rank=SearchRank(vector,
+                query)).order_by('-rank')
 
-#             query = SearchQuery(words[0])
-#             for word in words[1:]:
-#                 query = query | SearchQuery(word)
+            return render(request, 'lnf/search.html',
+                    {'search_string': search_string, 'items': items})
 
-#             items = Item.objects.annotate(rank=SearchRank(vector,
-#                 query)).order_by('-rank')
-
-#             return render(request, 'lnf/search.html',
-#                     {'search_string': search_string, 'items': items})
-
-#     return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/')

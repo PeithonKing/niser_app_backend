@@ -1,0 +1,77 @@
+{% extends './base.html' %}
+
+{% block title %}Profile of {{ user.name }}{% endblock %}
+
+{% block content %}
+	<h1>Profile of {{ user.name }}</h1>
+	<p>This is all the information we have stored about you.</p>
+	<p>Please make changes with utmost care. In case you accidentally delete important data, click on <a href="\profile">Discard Changes</a> at the bottom of the page.</p>
+
+	<!-- <table>
+		<tr>
+			<th>Field</th>
+			<th></th>
+			<th>Value</th>
+		</tr>
+		<tr>
+			<td>Email:</td>
+			<td>&emsp;</td>
+			<td>{{ user.email }}</td>
+		</tr>
+		<tr>
+			<td>Password:</td>
+			<td>&emsp;</td>
+			<td>*</td>
+		</tr>
+		<tr>
+			<td>Profile Picture:</td>
+			<td>&emsp;</td>
+			<td> <img src="{{ user.profile.dp }}" alt="User Profile Picture" width="150px"> </td>
+		</tr>
+		<tr>
+			<td>Virtual ID:</td>
+			<td>&emsp;</td>
+			<td>*</td>
+		</tr>
+		<tr>
+			<td>Joining Date and Time:</td>
+			<td>&emsp;</td>
+			<td>{{ user.profile.joined }}</td>
+		</tr>
+		<tr>
+			<td>School:</td>
+			<td>&emsp;</td>
+			<td>{{ user.profile.school }}</td>
+		</tr>
+		<tr>
+			<td>Batch:</td>
+			<td>&emsp;</td>
+			<td>{{ user.profile.batch }}</td>
+		</tr>
+		<tr>
+			<td>Program:</td>
+			<td>&emsp;</td>
+			<td>{{ user.profile.prog }}</td>
+		</tr>
+		<tr>
+			<td>About:</td>
+			<td>&emsp;</td>
+			<td>{{ user.profile.about }}</td>
+		</tr>
+		<tr>
+			<td>Karma:</td>
+			<td>&emsp;</td>
+			<td>{{ user.profile.karma }}</td>
+		</tr>
+		<tr>
+			<td>Gender:</td>
+			<td>&emsp;</td>
+			<td>{{ user.profile.gender }}</td>
+		</tr>
+ 	</table> -->
+<br>
+	<a href="/profile" class="btn btn-primary">Discard Changes</a>
+<br>
+<br>
+
+{% endblock %}

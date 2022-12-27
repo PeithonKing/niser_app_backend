@@ -17,7 +17,7 @@ class Item(models.Model):
     image = models.ImageField(upload_to='images', blank = True, null = True)
     claimed = models.BooleanField(default = False)
 
-    submitter = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    submitter = models.ForeignKey(Profile, on_delete=models.CASCADE)
     email = models.EmailField(verbose_name = 'Your Email Address')
 
     class Meta:

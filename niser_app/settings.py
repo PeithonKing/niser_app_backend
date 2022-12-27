@@ -20,7 +20,8 @@ ALLOWED_HOSTS = [IP]
 
 INSTALLED_APPS = [
     # My apps
-    'my_user.apps.MyUserConfig',        
+    "timetable.apps.TimetableConfig",
+    "my_user.apps.MyUserConfig",        
     "arc.apps.ArcConfig",
     "canteen_menu.apps.CanteenMenuConfig",
     "lnf.apps.LnfConfig",

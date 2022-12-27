@@ -14,6 +14,7 @@ from .helper import *
 
 from niser_app.local_settings import *
 from .daily_tasks import My_Send_Email
+from .forms import ProfileEditForm
 
 
 # def error404(request, exception):
@@ -38,14 +39,18 @@ def home(request):
     return render(request, 'my_user/index.html')
 
 def signup(request):
-    # print(f"\n{request.POST = }\n")
     if request.user is not None and request.user.is_authenticated:
         error_message = "You are already logged in! No need to signup. If you still want to signup, " 
         error_message += "please either logout first or open the site in an incognito window"
         messages.error(request, error_message)
         return render(request, "my_user/index.html")
     if request.method == 'POST':
+        # print(f"\n{dict(request.POST)['email'][0] = }, {type(dict(request.POST)['email'][0]) = }\n")
         emailForm = EmailForm(request.POST)
+        
+        if not dict(request.POST)['email'][0].endswith("@niser.ac.in"):
+            messages.error(request, "Please use your NISER email address")
+            return redirect('signup')
         if emailForm.is_valid():
             try:
                 u = User.objects.get(email=emailForm.cleaned_data['email'])
@@ -87,6 +92,7 @@ def signup(request):
             # print(f"\n\nVerification email has been sent. This is the verification link: {DOMAIN}/auth/verify/{user.pk}/{uvid}\n")
 
             messages.success(request, "Thank you for signing up. We have sent you a verification email.")
+            return redirect("home")
             return render(request, 'my_user/index.html')
     else:
         form = UserCreationForm()
@@ -129,8 +135,14 @@ def logout_view(request):
     # return render(request, 'my_user/index.html')
 
 def profile(request):
-    ...
+    if request.user is not None and request.user.is_authenticated:
+        return render(request, 'my_user/profile.html', {'user': request.user})
+    else:
+        messages.error(request, "Please login first to view your profile")
+        return redirect("home")
 
+def edit_profile(request):
+    return render(request, 'my_user/update_profile.html', {'user': request.user, "form": ProfileEditForm(request.user.profile)})
 
 # API Views
 def device_token(request, token):
