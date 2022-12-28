@@ -7,11 +7,27 @@ from django.views.generic.edit import CreateView
 from django.contrib import messages
 from django.template.loader import render_to_string
 
-from my_user.daily_tasks import My_Send_Email
+from my_user.daily_tasks import My_Send_Email, My_Send_Notification
 from niser_app.local_settings import DOMAIN
 
 from .forms import *
 from .models import *
+
+
+# helper functions
+
+def send_appropriate_notification(item):  # takes an Item object
+
+    message = item.__str__()
+    title = "Lost & Found"
+    image = item.image.url if item.image else None
+    
+    My_Send_Notification(
+        message=message,
+        title=title,
+        image=image
+    ).start()
+
 
 # Create your views here.
 
@@ -98,6 +114,17 @@ def submit_view(request):
             item = form.save(commit=False)
             item.submitter = request.user.profile
             item.save()
+            
+            
+            # My_Send_Email(
+            #     to=[request.user.email],
+            #     subject=f'Your {item.kind} item has been submitted successfully',
+            #     message=render_to_string("lnf/list_feedback.txt", {"DOMAIN": DOMAIN, "name": request.user.name, "id": listing.id}),
+            # ).start()
+            
+            
+            send_appropriate_notification(item)  # send notification to all users
+            
             messages.success(request, "Your item has been submitted successfully")
             return redirect('/lnf')
         else:

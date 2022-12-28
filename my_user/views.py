@@ -15,6 +15,8 @@ from .helper import *
 from niser_app.local_settings import *
 from .daily_tasks import My_Send_Email
 from .forms import ProfileEditForm
+from django.views.generic.edit import UpdateView
+from django.core.files.images import ImageFile
 
 
 # def error404(request, exception):
@@ -142,7 +144,27 @@ def profile(request):
         return redirect("home")
 
 def edit_profile(request):
-    return render(request, 'my_user/update_profile.html', {'user': request.user, "form": ProfileEditForm(request.user.profile)})
+    
+    if request.user is None or not request.user.is_authenticated:
+        messages.error(request, "Please login first to edit your profile")
+        return redirect("/auth/login")
+
+    if request.method == "GET":
+        form = ProfileEditForm(initial={
+            "dp": request.user.profile.dp,
+            "school": request.user.profile.school,
+            "batch": request.user.profile.batch,
+            "prog": request.user.profile.prog,
+            "about": request.user.profile.about,
+            "gender": request.user.profile.gender,
+        })
+    if request.method == "POST":
+        form = ProfileEditForm(request.POST, request.FILES, instance = request.user.profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully!")
+            return redirect("/profile")
+    return render(request, 'my_user/update_profile.html', {'user': request.user, "form": form})
 
 # API Views
 def device_token(request, token):

@@ -1,13 +1,32 @@
 # from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from my_user.daily_tasks import My_Send_Email
+from my_user.daily_tasks import My_Send_Email, My_Send_Notification
 from django.template.loader import render_to_string
 
 from niser_app.local_settings import *
 
 from .forms import *
 from .models import *
+
+
+# helper functions
+
+def send_appropriate_notification(listing):  # takes a Listing object
+
+    message = f"{listing.seller.user.name} wants to sell a {listing}."
+    title = "NISER Listings"
+    image = DOMAIN+listing.photo.url if listing.photo else None
+    
+    My_Send_Notification(
+        message=message,
+        title=title,
+        image=image
+    ).start()
+
+
+# Create your views here.
+
 
 def index(request): 
     items = Listing.objects.filter(sold = False)
@@ -31,6 +50,8 @@ def submit(request):
                 subject='New Listing Submitted',
                 message=render_to_string("listings/list_feedback.txt", {"DOMAIN": DOMAIN, "name": request.user.name, "id": listing.id}),
             ).start()
+            
+            send_appropriate_notification(listing)
             
             return redirect('/listings')
     else:

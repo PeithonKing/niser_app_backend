@@ -51,6 +51,9 @@ class Course(models.Model):
 
         super().save(*args, **kwargs)
 
+
+
+
 class Profile(models.Model):
     # PROFILE
     # 	1. A profile has a one to one relationship with a user instance.
@@ -108,4 +111,3 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.name
-

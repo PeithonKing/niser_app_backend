@@ -9,3 +9,4 @@ niser_app/local_settings.py
 */migrations/
 
 static/*/pics/
+static/profile_pictures

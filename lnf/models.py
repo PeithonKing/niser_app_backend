@@ -23,10 +23,10 @@ class Item(models.Model):
         ordering = ['-created', '-date']
 
     def __str__(self):
-        return f"{self.kind} {self.category} at {self.location} on {self.date.strftime('%a, %d %b %Y')}"
+        return f"{self.submitter.user.name} {self.kind} a {self.category} at {self.location} on {self.date.strftime('%a, %d %b %Y')}"
         # return (self.kind + '. ' + str(self.category) + '. ' + self.location + '. ' + self.date.strftime("%a, %d %b %Y")) + '.'
     def name(self):
         return self.__str__()
 
     def get_absolute_url(self):
-        return reverse('main:item', kwargs={'pk': self.pk})
+        return reverse('/lnf/item', kwargs={'pk': self.pk})

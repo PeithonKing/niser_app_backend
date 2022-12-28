@@ -1,76 +1,108 @@
 {% extends './base.html' %}
+{% load widget_tweaks %}
 
 {% block title %}Profile of {{ user.name }}{% endblock %}
 
 {% block content %}
-	<h1>Profile of {{ user.name }}</h1>
-	<p>This is all the information we have stored about you.</p>
-	<p>Please make changes with utmost care. In case you accidentally delete important data, click on <a href="\profile">Discard Changes</a> at the bottom of the page.</p>
+<h1>Profile of {{ user.name }}</h1>
+<p>This is all the information we have stored about you.</p>
+<p style="color:red;font-weight:bold">Please make changes with utmost care. In case you accidentally delete important
+	data, click on <a href="/profile">Discard Changes</a> at the bottom of the page.</p>
 
-	<!-- <table>
-		<tr>
-			<th>Field</th>
-			<th></th>
-			<th>Value</th>
-		</tr>
-		<tr>
-			<td>Email:</td>
-			<td>&emsp;</td>
-			<td>{{ user.email }}</td>
-		</tr>
-		<tr>
-			<td>Password:</td>
-			<td>&emsp;</td>
-			<td>*</td>
-		</tr>
-		<tr>
-			<td>Profile Picture:</td>
-			<td>&emsp;</td>
-			<td> <img src="{{ user.profile.dp }}" alt="User Profile Picture" width="150px"> </td>
-		</tr>
-		<tr>
-			<td>Virtual ID:</td>
-			<td>&emsp;</td>
-			<td>*</td>
-		</tr>
-		<tr>
-			<td>Joining Date and Time:</td>
-			<td>&emsp;</td>
-			<td>{{ user.profile.joined }}</td>
-		</tr>
-		<tr>
-			<td>School:</td>
-			<td>&emsp;</td>
-			<td>{{ user.profile.school }}</td>
-		</tr>
-		<tr>
-			<td>Batch:</td>
-			<td>&emsp;</td>
-			<td>{{ user.profile.batch }}</td>
-		</tr>
-		<tr>
-			<td>Program:</td>
-			<td>&emsp;</td>
-			<td>{{ user.profile.prog }}</td>
-		</tr>
-		<tr>
-			<td>About:</td>
-			<td>&emsp;</td>
-			<td>{{ user.profile.about }}</td>
-		</tr>
-		<tr>
-			<td>Karma:</td>
-			<td>&emsp;</td>
-			<td>{{ user.profile.karma }}</td>
-		</tr>
-		<tr>
-			<td>Gender:</td>
-			<td>&emsp;</td>
-			<td>{{ user.profile.gender }}</td>
-		</tr>
- 	</table> -->
+
 <br>
+
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+<div class="alert alert-danger">
+	<strong>{{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% endfor %}
+
+{% for error in form.non_field_errors %}
+<div class="alert alert-danger">
+	<strong>{{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% endif %}
+<br>
+
+
+
+
+<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	{% for field in form %}
+	<div class="form-group">
+		<label for="{{ field.id_for_label }}">{{ field.label }}</label>
+		{{field|add_class:'form-control'}}
+	</div>
+	<br>
+	{% endfor %}
+	<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#prompt">Update Profile</button>
 	<a href="/profile" class="btn btn-primary">Discard Changes</a>
+
+
+
+
+
+
+<!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="prompt" tabindex="-1" aria-labelledby="promptLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h1 class="modal-title fs-5" id="promptLabel">Update Profile?</h1>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<ul>
+				<li>Please recheck all the values in the form before clicking on the Update Profile button.</li>
+				<li style="color:red;font-weight:bold">Please make changes with utmost care. In case you accidentally delete important
+					data, click on <a href="/profile">Discard Changes</a> here or at the bottom of the page.</li>
+					<br>
+				<li style="font-size:large;font-weight:bold">This Action cannot be undone!</li>
+			</ul>
+
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		  <button class="btn btn-success" type="submit">Update Profile</button>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
 <br>
 <br>
 
