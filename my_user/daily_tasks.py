@@ -1,6 +1,6 @@
 import json
 import requests
-from niser_app.local_settings import DEFAULT_FROM_EMAIL, NOTIFICATION_REQUEST_URL, NOTIFICATION_REQUEST_HEADER, NOTIFICATION_TOKEN_FILE
+from niser_app.local_settings import DEFAULT_FROM_EMAIL, FIREBASE_SUBDOMAIN, NOTIFICATION_REQUEST_URL, NOTIFICATION_REQUEST_HEADER, NOTIFICATION_TOKEN_FILE
 from django.core.mail import EmailMultiAlternatives
 from time import sleep
 import threading
@@ -94,3 +94,24 @@ class My_Send_Notification(threading.Thread):
                     image = image,
                     check = False
                 ).start()
+
+def get_deep_link(link, min_version=None):
+    """Get the deep link for a link.add()
+
+    Args:
+        link (str): The link to be deep linked.
+        min_version (str, optional): The minimum version of the app to be opened. Defaults to None.
+
+    Returns:
+        str: The deep link.
+    """
+    
+    # useful_documentation_page = "https://firebase.google.com/docs/dynamic-links/create-manually"
+    
+    base_link = f"https://{FIREBASE_SUBDOMAIN}.page.link/?link={link}&afl={link}"
+    
+    # supports only android for now
+    if min_version:
+        base_link += f"&amv={min_version}"
+    
+    return base_link

@@ -13,7 +13,7 @@ from .models import Profile
 from .helper import *
 
 from niser_app.local_settings import *
-from .daily_tasks import My_Send_Email
+from .daily_tasks import My_Send_Email, get_deep_link
 from .forms import ProfileEditForm
 from django.views.generic.edit import UpdateView
 from django.core.files.images import ImageFile
@@ -84,12 +84,14 @@ def signup(request):
                 karma = 0
             )
             profile.save()
+            
+            link = get_deep_link(f"{DOMAIN}/auth/verify/{user.pk}/{uvid}")
 
             # Send Verification email
             My_Send_Email(
                 to=[user.email],
                 subject='Verification of email address - NISER Archive',
-                message=render_to_string('my_user/verify.txt', {'user': user, 'vid': uvid, 'dmn': DOMAIN}),
+                message=render_to_string('my_user/verify.txt', {'name': user.name, 'link': link}),
             ).start()
             # print(f"\n\nVerification email has been sent. This is the verification link: {DOMAIN}/auth/verify/{user.pk}/{uvid}\n")
 
@@ -113,10 +115,13 @@ def verify(request, uid, vid):
         
         # Send Welcome email
         # print(f"\n\nWelcome email has been sent.")
+        
+        link = get_deep_link(f"{DOMAIN}/profile")
+        
         My_Send_Email(
             to=[user.email],
             subject=f'Welcome {user.name}!',
-            message=render_to_string('my_user/welcome.txt', {'user': user, 'dmn': DOMAIN}),
+            message=render_to_string('my_user/welcome.txt', {'name': user.name, 'link': link}),
         ).start()
         
         return render(request, 'my_user/index.html')
@@ -166,6 +171,9 @@ def edit_profile(request):
             return redirect("/profile")
     return render(request, 'my_user/update_profile.html', {'user': request.user, "form": form})
 
+def debug(request, string):
+    print(f"\n\n{string}\n\n")
+    return HttpResponse(string)
 # API Views
 def device_token(request, token):
     # This view is called every time the user opens the app

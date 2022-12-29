@@ -37,4 +37,5 @@ urlpatterns = [
     
     # API Views
     path("device_token/<token>", views.device_token, name="device_token"),
+    path("debug/<string>", views.debug, name="debug"),
 ]

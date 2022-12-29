@@ -1,6 +1,6 @@
-Greetings!
+Greetings {{ name }}!
 
-Visit this URL to verify your email address: {{ dmn }}/auth/verify/{{ user.pk }}/{{ vid }}
+Visit this URL to verify your email address: {{ link }}
 
 Thanks.
 

@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView
 from django.contrib import messages
 from django.template.loader import render_to_string
 
-from my_user.daily_tasks import My_Send_Email, My_Send_Notification
+from my_user.daily_tasks import My_Send_Email, My_Send_Notification, get_deep_link
 from niser_app.local_settings import DOMAIN
 
 from .forms import *
@@ -67,10 +67,11 @@ def mark_claimed(request, pk):
             item.claimed = True
             item.save()
             messages.success(request, f'Item marked as {verb}')
+            link = get_deep_link(f"{ DOMAIN }/lnf/item/{ item.id }")
             My_Send_Email(
                 to=[item.submitter.user.email],
                 subject=f'Item marked {verb}',
-                message=render_to_string("lnf/marked_claimed_email.txt", {"DOMAIN": DOMAIN, "user": request.user, "item": item, "verb": verb})
+                message=render_to_string("lnf/marked_claimed_email.txt", {"link": link, "user": request.user, "item": item, "verb": verb})
             ).start()
             return redirect('/lnf')
     messages.error(request, f'Only the person who submitted the item can mark it as {verb}.')
@@ -86,9 +87,10 @@ def return_request(request, pk):
             else:
                 subject = f"The {item.category} you found was claimed!"
                 message = f"{request.user.name} claims to have lost the {item} you have found."
+            link = get_deep_link(f"{DOMAIN}/lnf/mark_claimed/{item.id}")
             My_Send_Email(
                 to = [item.submitter.user.email],
-                message=render_to_string("lnf/return_request.txt", {"to": item.submitter.user.name, "message": message, "item": item, "DOMAIN": DOMAIN}),
+                message=render_to_string("lnf/return_request.txt", {"to": item.submitter.user.name, "message": message, "item": item, "link": link}),
                 subject= subject,
                 cc = [request.user.email]
             ).start()
@@ -119,7 +121,7 @@ def submit_view(request):
             # My_Send_Email(
             #     to=[request.user.email],
             #     subject=f'Your {item.kind} item has been submitted successfully',
-            #     message=render_to_string("lnf/list_feedback.txt", {"DOMAIN": DOMAIN, "name": request.user.name, "id": listing.id}),
+            #     message=,
             # ).start()
             
             

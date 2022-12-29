@@ -1,7 +1,7 @@
 # from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from my_user.daily_tasks import My_Send_Email, My_Send_Notification
+from my_user.daily_tasks import My_Send_Email, My_Send_Notification, get_deep_link
 from django.template.loader import render_to_string
 
 from niser_app.local_settings import *
@@ -44,11 +44,13 @@ def submit(request):
             listing.seller = request.user.profile
             listing.created = now()
             listing.save()
+            
+            link = get_deep_link(f"{DOMAIN}/listings/listing/{listing.id}")
 
             My_Send_Email(
                 to=[request.user.email],
                 subject='New Listing Submitted',
-                message=render_to_string("listings/list_feedback.txt", {"DOMAIN": DOMAIN, "name": request.user.name, "id": listing.id}),
+                message=render_to_string("listings/list_feedback.txt", {"link": link, "name": request.user.name}),
             ).start()
             
             send_appropriate_notification(listing)
@@ -72,10 +74,11 @@ def mark_sold(request, pk):
             listing.sold = True
             listing.save()
             messages.success(request, 'Listing marked as sold')
+            link = get_deep_link(f"{DOMAIN}/listings/listing/{listing.id}")
             My_Send_Email(
                 to=[listing.seller.user.email],
                 subject='Listing marked Sold',
-                message=render_to_string("listings/marked_sold_email.txt", {"DOMAIN": DOMAIN, "user": request.user, "listing": listing})
+                message=render_to_string("listings/marked_sold_email.txt", {"link": link, "user": request.user, "listing": listing})
             ).start()
             return redirect('/listings')
     messages.error(request, 'Only the person who submitted the listing can mark it as sold.')
@@ -85,9 +88,10 @@ def buy_request(request, pk):
     if request.user.is_authenticated:
         listing = Listing.objects.get(pk=pk)
         if listing.seller != request.user.profile:
+            link = get_deep_link(f"{DOMAIN}/listings/mark_sold/{listing.id}")
             My_Send_Email(
                 to = [listing.seller.user.email],
-                message=render_to_string("listings/buy_request.txt", {"seller": listing.seller.user.name, "buyer": request.user.name, "listing": listing, "DOMAIN": DOMAIN}),
+                message=render_to_string("listings/buy_request.txt", {"seller": listing.seller.user.name, "buyer": request.user.name, "listing": listing, "link": link}),
                 subject= f"Buy Request for your listing: {listing}",
                 cc = [request.user.email]
             ).start()
