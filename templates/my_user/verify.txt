@@ -1,6 +1,6 @@
 Greetings {{ name }}!
 
-Visit this URL to verify your email address: {{ link }}
+Visit this URL to verify your email address: {{ link|safe }}
 
 Thanks.
 

@@ -2,7 +2,7 @@ Hi {{ name }}!
 
 Your latest listing have been saved successfully. You can view your listing by clicking on the link below.
 
-{{ link }}
+{{ link|safe }}
 
 
 ~ NISER Coding Club

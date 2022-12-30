@@ -1,6 +1,6 @@
 import json
 import requests
-from niser_app.local_settings import DEFAULT_FROM_EMAIL, FIREBASE_SUBDOMAIN, NOTIFICATION_REQUEST_URL, NOTIFICATION_REQUEST_HEADER, NOTIFICATION_TOKEN_FILE
+from niser_app.local_settings import DEFAULT_FROM_EMAIL, FIREBASE_SUBDOMAIN, NOTIFICATION_REQUEST_URL, NOTIFICATION_REQUEST_HEADER, NOTIFICATION_TOKEN_FILE, PACKAGE_NAME
 from django.core.mail import EmailMultiAlternatives
 from time import sleep
 import threading
@@ -105,13 +105,10 @@ def get_deep_link(link, min_version=None):
     Returns:
         str: The deep link.
     """
-    
     # useful_documentation_page = "https://firebase.google.com/docs/dynamic-links/create-manually"
-    
-    base_link = f"https://{FIREBASE_SUBDOMAIN}.page.link/?link={link}&afl={link}"
-    
+    base_link = f"https://{FIREBASE_SUBDOMAIN}.page.link/?link={link}&apn={PACKAGE_NAME}&afl={link}"
+    # https://niserapp.page.link/?link=http://192.168.29.114:8000/profile&apn=com.example.niser_app&afl=https://www.desmos.com/calculator
     # supports only android for now
     if min_version:
         base_link += f"&amv={min_version}"
-    
     return base_link
