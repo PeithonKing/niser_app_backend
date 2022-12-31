@@ -10,5 +10,3 @@ niser_app/local_settings.py
 
 static/*/pics/
 static/profile_pictures
-
-*.kate-swp
