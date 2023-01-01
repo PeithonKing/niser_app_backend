@@ -26,6 +26,8 @@ NOTIFICATION_REQUEST_HEADER = {
     'Authorization': 'Bearer ' + access_token_object.access_token,
     'Content-Type': 'application/json; UTF-8',
 }
+FIREBASE_SUBDOMAIN = ""  # GET THIS FROM FIREBASE CONSOLE
+PACKAGE_NAME = "com.example.niser_app"  # GET THIS FROM THE APP ITSELF
 
 DATABASES = {
     'default': {
