@@ -1,77 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'niser_app/base.html' %}
 {% load static %}
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="{% static 'listings/styles/style.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'listings/styles/styleBootstrap.css' %}">
-	<script src="https://kit.fontawesome.com/51158303ea.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
-		crossorigin="anonymous"></script>
-	{% block head %}{% endblock head %}
-	<title>
-		{% block title %}{% endblock %} | NISER Listings
-	</title>
-</head>
+{% block head_ext %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'listings/styles/style.css' %}">
+    {% block head %}{% endblock head %}
+    <title>
+        {% block title %}{% endblock %} | NISER Listings
+    </title>
+{% endblock head_ext %}
 
-<body>
+{% block app_template %}
+    <div class="container">{% include "my_user/messages.html" %}</div>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="{% url 'listings' %}">NISER Listings</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="{% url 'listings' %}">Home</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link active" href="{% url 'listings-submit' %}">Sell</a>
-					</li>
-				</ul>
-				{% comment %} <form action="{% url 'listings:search' %}" method="GET">
-					<input class="formCustom" type="search" name="query" placeholder="Search"
-						style="height:fit-content;">
-					<input class="btn btn-outline-light" type="submit" value="Search">
-					<br>
-					<p hidden>Sort by:
-						  <input type="radio" id="Relevance" name="sort_by" value="-rank" checked="checked">
-						  <label for="Relevance">Relevance</label>
-					</p>
-				</form> {% endcomment %}
-			</div>
-		</div>
-	</nav>
-	<div class="container">{% include "my_user/messages.html" %}</div>
-	
-	{% block Search %}{% endblock %}
-	<!-- <hr> -->
+    {% block Search %}{% endblock %}
 
 
 {% block content %}{% endblock content %}
 
 
 
-	<!-- Footer -->
-	<section id="footer">
-		<div class="footer container">
-			<h2>NISER Listings</h2>
-			<a class="social git" href="#" title="Link to GitHub" target="_blank"><i class="fab fa-git-alt"></i></a>
-			<a class="social mail" href="#" title="Mail Us" target="_blank"><i class="far fa-envelope"></i></a>
-			<h2>Software Development Group</h2>
-			<h3>National Institute of Science Education and Research</h3>
-			<h4>Bhubaneswar, India</h4>
-		</div>
-	</section>
-	<!-- End Footer -->
+    <!-- Footer -->
+    <section id="footer">
+        <div class="footer container">
+            <h2>NISER Listings</h2>
+            <a class="social git" href="#" title="Link to GitHub" target="_blank"><i class="fab fa-git-alt"></i></a>
+            <a class="social mail" href="#" title="Mail Us" target="_blank"><i class="far fa-envelope"></i></a>
+            <h2>Software Development Group</h2>
+            <h3>National Institute of Science Education and Research</h3>
+            <h4>Bhubaneswar, India</h4>
+        </div>
+    </section>
+    <!-- End Footer -->
 
-</body>
+{% endblock app_template %}
 
 </html>
