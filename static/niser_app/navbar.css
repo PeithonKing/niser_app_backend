@@ -1,0 +1,11 @@
+li.nav-item {
+    list-style-type: none;
+}
+
+ul.navbar-nav li.nav-item + li.nav-item {
+  margin-top: 0;
+}
+
+.navbar {
+    margin-bottom: 16px;
+}
