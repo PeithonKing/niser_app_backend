@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Form, CharField
+from django.forms import ModelForm
 from arc.models import *
 
 # class ProfileForm(ModelForm):
@@ -34,9 +34,7 @@ class ItemForm(ModelForm):
         self.fields['desc'].widget.attrs.update({'rows': '2'})
         self.fields['fl'].widget.attrs.update({'class': 'form-control-file'})
 
-class CourseForm(Form):
-    code    = CharField(max_length=6)
-    name    = CharField(max_length=128)
+class CourseForm(ModelForm):
     class Meta:
         model = Course
         fields = ['code', 'name']
