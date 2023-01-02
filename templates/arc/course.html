@@ -18,7 +18,7 @@
 
   {% if user.is_authenticated %}
     <br>
-    <button type="button" id="itr-modal-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#itr-modal-inner">
+    <button type="button" id="itr-modal-btn" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#itr-modal-inner">
       <span class="oi oi-plus"> </span>  Add
     </button>
     <br>
@@ -31,13 +31,11 @@
 
             <div class="modal-header">
               <h5 class="modal-title" id="itr-modal-header"> Add a new iteration to {{ crs.code.upper }} </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <div type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
             </div>
 
             <div class="modal-body" id="itr-modal-body">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
+              {% include './add-itr.html' %}
             </div>
 
             <div class="modal-footer" id="itr-modal-footer">
