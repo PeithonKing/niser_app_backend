@@ -19,7 +19,7 @@
 
   {% if user.is_authenticated %}
     <br>
-    <button type="button" id="course-modal-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#course-modal-inner">
+    <button type="button" id="course-modal-btn" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#course-modal-inner">
       <span class="oi oi-plus"> </span>  Add
     </button>
     <br>
@@ -32,13 +32,11 @@
               <h5 class="modal-title" id="course-modal-header">
                 Add a new course to {{ sch.abbr.upper }}
               </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <div type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
             </div>
 
             <div class="modal-body" id="course-modal-body">
-              <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
+              {% include './add-crs.html' %}
             </div>
 
             <div class="modal-footer" id="course-modal-footer">
