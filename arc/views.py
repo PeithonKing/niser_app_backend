@@ -74,7 +74,7 @@ def itr_view(request, cd, yr, sea):
         form2 = CommentReportForm()
         form3 = ItemReportForm()
         if request.user is not None:
-            form = CommentForm()
+            form = ItemForm()
         return render(request, 'arc/itr.html', {
             'itr': i,
             'item_list': items,

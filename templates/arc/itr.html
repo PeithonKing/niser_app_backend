@@ -10,30 +10,30 @@
 <link rel="stylesheet" href="{% static 'main/css/itr.css' %}">
 {% endblock %}
 
-{% block content %}	
+{% block content %}
   {% if item_list %}
     <ul class="list-group">
     {% for i in item_list %}
     <li class="list-group-item">
       <a href="{% url 'file' 'self' i.fl %}">{{ i.name }}</a>
       {% if user.is_authenticated and user != i.op %}
-        <button id="f_{{ i.id }}" type="button" class="btn btn-secondary btn-sm btn-item-report float-right" data-toggle="modal" data-target="#item-report-modal-inner"><span class="oi oi-warning"></span></button>
+        <button id="f_{{ i.id }}" type="button" class="btn btn-secondary btn-sm btn-item-report float-right" data-bs-toggle="modal" data-bs-target="#item-report-modal-inner"><span class="oi oi-warning"></span></button>
       {% endif %}
     </li>
     {% endfor %}
     </ul>
   {% else %}
     <p>Nothing.</p>
-  {% endif %}	
+  {% endif %}
 
   {% if user.is_authenticated %}
     <br>
-    <button type="button" id="item-modal-btn" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#item-modal-inner">
+    <button type="button" id="item-modal-btn" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-modal-inner">
       <span class="oi oi-plus"> </span>  Add
     </button>
     <br>
 
-    
+
   {% endif %}
   <br>
   Discussions
@@ -52,16 +52,16 @@
               <span class="oi oi-clock"></span> {{ c.posted  }}
             </div>
             <div class="col-1">
-              {% if user.is_authenticated %} 
+              {% if user.is_authenticated %}
                 {% if user == c.user %}
                   <div class="del-container">
-                    <button id="d_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-delete" data-toggle="modal" data-target="#delete-modal-inner">
+                    <button id="d_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#delete-modal-inner">
                       <span  class="oi oi-trash"></span>
                     </button>
                   </div>
                 {% else %}
                   <div class="del-container">
-                    <button id="r_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-report" data-toggle="modal" data-target="#report-modal-inner">
+                    <button id="r_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-report" data-bs-toggle="modal" data-bs-target="#report-modal-inner">
                       <span class="oi oi-warning"></span>
                     </button>
                   </div>
@@ -109,7 +109,7 @@
             <label for="{{ form.text.id_for_label }}">
               Add a new comment:
             </label>&nbsp;&nbsp;&nbsp;
-            <button href="#" type="button" role="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#md-modal-inner">
+            <button href="#" type="button" role="button" class="btn btn-sm btn-primary float-right" data-bs-toggle="modal" data-bs-target="#md-modal-inner">
               <span class="oi oi-info"></span>&nbsp;Formatting Help
             </button>
           </div>
@@ -118,7 +118,7 @@
         </div>
         {{ form.text|add_class:'form-control' }}
       </div>
-      
+
       <div id="preview" class="alert alert-secondary" role="alert"></div>
       <div class="container">
         <div class="row">
@@ -143,18 +143,12 @@
 
           <div class="modal-header">
             <h5 class="modal-title" id="item-modal-header"> <span class="oi oi-plus"> </span> Add new content to {{ itr.short_name }} </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
           </div>
 
           <div class="modal-body" id="item-modal-body">
             <div class="modal-body-inner" id="item-modal-body-inner">
-              <div class="container">
-                <div class="text-center">
-                  <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-                </div>
-              </div>
+             {% include './add-item.html' %}
             </div>
             <br>
             <div id="item-progress" class="progress">
@@ -179,7 +173,7 @@
 
           <div class="modal-header">
             <h5 class="modal-title" id="report-modal-header"> <span class="oi oi-warning"></span> Report </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
           </div>
 
           <div class="modal-body" id="report-modal-body">
@@ -215,7 +209,7 @@
 
           <div class="modal-header">
             <h5 class="modal-title" id="item-report-modal-header"> <span class="oi oi-warning"></span> Report </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
           </div>
 
           <div class="modal-body" id="item-report-modal-body">
@@ -251,7 +245,7 @@
 
           <div class="modal-header">
             <h5 class="modal-title" id="delete-modal-header"> <span class="oi oi-trash"></span> Delete comment </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
           </div>
 
           <div class="modal-body" id="delete-modal-body">
@@ -278,7 +272,7 @@
 
           <div class="modal-header">
             <h5 class="modal-title"> <span class="oi oi-info"></span> Formatting Help </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <div type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></div>
           </div>
 
           <div class="modal-body">
@@ -351,7 +345,7 @@
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal"> Got it. </button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> Got it. </button>
           </div>
 
         </div>
