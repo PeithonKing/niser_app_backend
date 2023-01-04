@@ -15,10 +15,10 @@ Search Results
   <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for item in listings %}
     <div class="col">
-      <a href="listings/{{ item.id }}" style="text-decoration: none; color: #340c5a;">
+      <a href="/listings/listing/{{ item.id }}" style="text-decoration: none; color: #340c5a;">
         <div class="card">
           
-						<div class="custom-card-img-top" style="background-image: url('{{ item.photo.url }}')"></div>
+    <div class="custom-card-img-top" style="background-image: url('{{ item.photo.url }}')"></div>
           <div class="card-body">
             <h5 class="card-title">{{ item }}</h5>
             <p class="card-text">Price: ₹ {{ item.price }}</p>
@@ -32,6 +32,7 @@ Search Results
     </div>
   </div>
   {% endfor %}
+</div>
 </div>
 
 {% else %}

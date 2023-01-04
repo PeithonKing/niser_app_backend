@@ -11,6 +11,19 @@
     </title>
 {% endblock head_ext %}
 
+{% block navitem %}
+<form action="{% url 'search' %}" method="GET">
+    <input class="formCustom" type="search" name="query" placeholder="Search"
+        style="height:fit-content;">
+    <input class="btn btn-outline-light" type="submit" value="Search">
+    <br>
+    <p hidden>Sort by:
+          <input type="radio" id="Relevance" name="sort_by" value="-rank" checked="checked">
+          <label for="Relevance">Relevance</label>
+    </p>
+</form>
+{% endblock navitem %}
+
 {% block app_template %}
     <div class="container">{% include "my_user/messages.html" %}</div>
 
@@ -25,8 +38,8 @@
     <section id="footer">
         <div class="footer container">
             <h2>NISER Listings</h2>
-            <a class="social git" href="#" title="Link to GitHub" target="_blank"><i class="fab fa-git-alt"></i></a>
-            <a class="social mail" href="#" title="Mail Us" target="_blank"><i class="far fa-envelope"></i></a>
+            <a class="social git" href="https://github.com/sdgniser" title="Link to GitHub" target="_blank"><i class="fab fa-git-alt"></i></a>
+            <a class="social mail" href="mailto:sdg@niser.ac.in" title="Mail Us" target="_blank"><i class="far fa-envelope"></i></a>
             <h2>Software Development Group</h2>
             <h3>National Institute of Science Education and Research</h3>
             <h4>Bhubaneswar, India</h4>
