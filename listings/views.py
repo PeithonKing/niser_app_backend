@@ -1,4 +1,4 @@
-# from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
+from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from my_user.daily_tasks import My_Send_Email, My_Send_Notification, get_deep_link
@@ -103,26 +103,26 @@ def buy_request(request, pk):
     return redirect('/listings')
 
 
-# def search(request):
-#     if request.method == 'GET':
-#         form = SearchForm(request.GET)
-#         if form.is_valid():
-#             search_string = form.cleaned_data['query']
+def search(request):
+    if request.method == 'GET':
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            search_string = form.cleaned_data['query']
 
-#             words = search_string.lower().split(' ')
-#             vector = SearchVector('title', 'category__name', 'location__location', 
-#                     'condition__condition', 'description', 'op')
+            words = search_string.lower().split(' ')
+            vector = SearchVector('title', 'category__name', 'location__location',
+                    'condition__condition', 'description', 'seller')
 
-#             query = SearchQuery(words[0])
-#             for word in words[1:]:
-#                 query = query | SearchQuery(word)
+            query = SearchQuery(words[0])
+            for word in words[1:]:
+                query = query | SearchQuery(word)
 
-#             sort_by = form.cleaned_data['sort_by']
-#             sort_by = ('-rank',) if sort_by == '-rank' else ('-rank', sort_by)
-#             listings = Listing.objects.annotate(rank=SearchRank(vector,
-#                 query)).order_by(*sort_by)
+            sort_by = form.cleaned_data['sort_by']
+            sort_by = ('-rank',) if sort_by == '-rank' else ('-rank', sort_by)
+            listings = Listing.objects.annotate(rank=SearchRank(vector,
+                query)).order_by(*sort_by)
 
-#             return render(request, 'results.html',
-#                     {'search_string': search_string, 'listings': [listing for listing in listings if not listing.sold]})
+            return render(request, 'listings/results.html',
+                    {'search_string': search_string, 'listings': [listing for listing in listings if not listing.sold]})
 
-#     return HttpResponseRedirect('/')
+    return redirect('/listings')

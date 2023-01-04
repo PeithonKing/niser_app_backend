@@ -13,7 +13,7 @@ from .models import Profile
 from .helper import *
 
 from niser_app.local_settings import *
-from .daily_tasks import My_Send_Email, get_deep_link
+from .daily_tasks import My_Send_Email
 from .forms import ProfileEditForm
 from django.views.generic.edit import UpdateView
 from django.core.files.images import ImageFile
@@ -42,14 +42,14 @@ def home(request):
 
 def signup(request):
     if request.user is not None and request.user.is_authenticated:
-        error_message = "You are already logged in! No need to signup. If you still want to signup, " 
+        error_message = "You are already logged in! No need to signup. If you still want to signup, "
         error_message += "please either logout first or open the site in an incognito window"
         messages.error(request, error_message)
         return render(request, "my_user/index.html")
     if request.method == 'POST':
         # print(f"\n{dict(request.POST)['email'][0] = }, {type(dict(request.POST)['email'][0]) = }\n")
         emailForm = EmailForm(request.POST)
-        
+
         if not dict(request.POST)['email'][0].endswith("@niser.ac.in"):
             messages.error(request, "Please use your NISER email address")
             return redirect('signup')
@@ -70,9 +70,9 @@ def signup(request):
             # we get an instance of an User created from the form. We don't yet save the user to the database
             user.is_active = False  # We set the user to inactive so that we can set it to active only after verifying the email address
             user.save()  # Now we save the user
-            
+
             uvid = genVID(user.email)  # Generate a unique verification ID for the email address
-            
+
             profile = Profile(
                 user = user,
                 vid = uvid,
@@ -84,14 +84,12 @@ def signup(request):
                 karma = 0
             )
             profile.save()
-            
-            link = get_deep_link(f"{DOMAIN}/auth/verify/{user.pk}/{uvid}")
 
             # Send Verification email
             My_Send_Email(
                 to=[user.email],
                 subject='Verification of email address - NISER Archive',
-                message=render_to_string('my_user/verify.txt', {'name': user.name, 'link': link}),
+                message=render_to_string('my_user/verify.txt', {'user': user, 'vid': uvid, 'dmn': DOMAIN}),
             ).start()
             # print(f"\n\nVerification email has been sent. This is the verification link: {DOMAIN}/auth/verify/{user.pk}/{uvid}\n")
 
@@ -112,18 +110,15 @@ def verify(request, uid, vid):
         user.save()
         login(request, user)
         messages.success(request, 'Your email has been verified. Welcome to NISER Archive!')
-        
+
         # Send Welcome email
         # print(f"\n\nWelcome email has been sent.")
-        
-        link = get_deep_link(f"{DOMAIN}/profile")
-        
         My_Send_Email(
             to=[user.email],
             subject=f'Welcome {user.name}!',
-            message=render_to_string('my_user/welcome.txt', {'name': user.name, 'link': link}),
+            message=render_to_string('my_user/welcome.txt', {'user': user, 'dmn': DOMAIN}),
         ).start()
-        
+
         return render(request, 'my_user/index.html')
     else:
         return HttpResponse('Activation link is invalid!')
@@ -141,6 +136,9 @@ def logout_view(request):
     return redirect("home")
     # return render(request, 'my_user/index.html')
 
+def user(request, user):
+    return render(request, 'my_user/profile.html', {'user': user})
+
 def profile(request):
     if request.user is not None and request.user.is_authenticated:
         return render(request, 'my_user/profile.html', {'user': request.user})
@@ -149,7 +147,7 @@ def profile(request):
         return redirect("home")
 
 def edit_profile(request):
-    
+
     if request.user is None or not request.user.is_authenticated:
         messages.error(request, "Please login first to edit your profile")
         return redirect("/auth/login")
@@ -171,15 +169,12 @@ def edit_profile(request):
             return redirect("/profile")
     return render(request, 'my_user/update_profile.html', {'user': request.user, "form": form})
 
-def debug(request, string):
-    print(f"\n\n{string}\n\n")
-    return HttpResponse(string)
 # API Views
 def device_token(request, token):
     # This view is called every time the user opens the app
     # The user tells us his token. We store it in a file.
-    # Not necessarily the user have to have an account to 
-    # use the app. So any users (irrespective of whether 
+    # Not necessarily the user have to have an account to
+    # use the app. So any users (irrespective of whether
     # logged in or not) can (have to) send us their token.
     # THIS TOKEN ONLY HELPS US SEND NOTIFICATION TO THE APP. nothing else.
     # This token probably won't change unless the user does destructive
