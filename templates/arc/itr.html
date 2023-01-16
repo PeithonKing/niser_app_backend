@@ -6,7 +6,7 @@
 {% block l3h %}{{ itr }}{% endblock %}
 {% block l5h %}{{ itr.inst }}{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'main/node_modules/katex/dist/katex.min.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.css" integrity="sha512-mQwom8Ns4op+H29oDkD/LXO/OsXPvCFfkgZkFAVrhhePzRLU8NUI3Nkm43NhWUSmj3p5Cca2HTEkMQmXQRwDQQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="{% static 'arc/css/itr.css' %}">
 {% endblock %}
 
@@ -108,9 +108,9 @@
       <div class="form-group">
         <div class="container" id="help-container">
           <div class="row">
-            <label for="{{ form.text.id_for_label }}">
+            <label for="{{ comment_form.text.id_for_label }}">
               Add a new comment:
-            </label>&nbsp;&nbsp;&nbsp;
+            </label>
             <button href="#" type="button" role="button" class="btn btn-sm btn-primary float-right" data-bs-toggle="modal" data-bs-target="#md-modal-inner">
               <span class="oi oi-info"></span>&nbsp;Formatting Help
             </button>
@@ -118,8 +118,10 @@
           <div class="row">
           </div>
         </div>
-        {{ form.text|add_class:'form-control' }}
+        {{ comment_form.text|add_class:'form-control' }}
       </div>
+
+      <br/>
 
       <div id="preview" class="alert alert-secondary" role="alert"></div>
       <div class="container">
@@ -358,7 +360,7 @@
 {% endblock %}
 
 {% block js %}
-  <script defer src="{% static 'main/node_modules/katex/dist/katex.min.js' %}"></script>
-  <script defer src="{% static 'main/node_modules/katex/dist/contrib/auto-render.min.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/katex.min.js" integrity="sha512-sHSNLECRJSK+BFs7E8DiFc6pf6n90bLI85Emiw1jhreduZhK3VXgq9l4kAt9eTIHYAcuQBKHL01QKs4/3Xgl8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.4/contrib/auto-render.min.js" integrity="sha512-iWiuBS5nt6r60fCz26Nd0Zqe0nbk1ZTIQbl3Kv7kYsX+yKMUFHzjaH2+AnM6vp2Xs+gNmaBAVWJjSmuPw76Efg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="text/javascript" src="{% static 'arc/js/itr.js' %}"></script>
 {% endblock %}

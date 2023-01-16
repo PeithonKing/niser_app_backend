@@ -73,15 +73,18 @@ def itr_view(request, cd, yr, sea):
         form = None
         form2 = CommentReportForm()
         form3 = ItemReportForm()
+        form4 = None
         if request.user is not None:
             form = ItemForm()
+            form4 = CommentForm()
         return render(request, 'arc/itr.html', {
             'itr': i,
             'item_list': items,
             'comm_list': comments,
             'form': form,
             'report_form': form2,
-            'item_report_form': form3
+            'item_report_form': form3,
+            'comment_form': form4
             })
     except Exception as e:
         raise e
