@@ -189,8 +189,9 @@ def add_crs(request, abbrev):
                     return render(request, 'arc/add-crs.html',
                             {'exists': True, 'crs': crs})
                 except Course.DoesNotExist:
-                    crs =  form.save(commit=False)
-                    crs.code = crs.code.lower()
+                    crs = Course()
+                    crs.code = form.cleaned_data['code'].lower()
+                    crs.name = form.cleaned_data['name']
                     crs.op = request.user
                     crs.school = s
                     crs.save()
