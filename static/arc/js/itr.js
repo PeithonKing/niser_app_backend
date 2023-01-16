@@ -27,7 +27,7 @@ $('.btn-report').click(function() {
 
         $.ajax({
             type: 'POST',
-            url: '/report/c/'+id+'/',
+            url: '/arc/report/c/'+id+'/',
             data: formData,
             processData: false,
             contentType: false,
@@ -57,7 +57,7 @@ $('.btn-item-report').click(function() {
 
         $.ajax({
             type: 'POST',
-            url: '/report/i/'+id+'/',
+            url: '/arc/report/i/'+id+'/',
             data: formData,
             processData: false,
             contentType: false,

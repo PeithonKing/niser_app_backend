@@ -17,7 +17,9 @@
     <li class="list-group-item">
       <a href="{% url 'file' 'self' i.fl %}">{{ i.name }}</a>
       {% if user.is_authenticated and user != i.op %}
-        <button id="f_{{ i.id }}" type="button" class="btn btn-secondary btn-sm btn-item-report float-right" data-bs-toggle="modal" data-bs-target="#item-report-modal-inner"><span class="oi oi-warning"></span></button>
+        <button id="f_{{ i.id }}" type="button" class="btn btn-outline-danger btn-sm btn-item-report float-right" data-bs-toggle="modal" data-bs-target="#item-report-modal-inner">
+        Report
+        </button>
       {% endif %}
     </li>
     {% endfor %}
@@ -55,14 +57,14 @@
               {% if user.is_authenticated %}
                 {% if user == c.user %}
                   <div class="del-container">
-                    <div id="d_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#delete-modal-inner">
+                    <div id="d_{{ c.id }}" type="button" class="btn btn-outline-danger btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#delete-modal-inner">
                       <span class="bi bi-trash"></span>
                     </div>
                   </div>
                 {% else %}
                   <div class="del-container">
-                    <div id="r_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-report" data-bs-toggle="modal" data-bs-target="#report-modal-inner">
-                      <span class="oi oi-warning"></span>
+                    <div id="r_{{ c.id }}" type="button" class="btn btn-outline-danger btn-sm btn-report" data-bs-toggle="modal" data-bs-target="#report-modal-inner">
+                      Report
                     </div>
                   </div>
                 {% endif %}
