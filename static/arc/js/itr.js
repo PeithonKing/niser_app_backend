@@ -116,7 +116,7 @@ $(document).ready(function(){
         setProgress(0);
         $.ajax({
             type: 'GET',
-            url: 'add/',
+            url: document.URL + 'add/',
             beforeSend: function() {
                 $('#item-modal-body-inner').html();
             },
