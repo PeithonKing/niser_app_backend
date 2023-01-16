@@ -55,15 +55,15 @@
               {% if user.is_authenticated %}
                 {% if user == c.user %}
                   <div class="del-container">
-                    <button id="d_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#delete-modal-inner">
-                      <span  class="oi oi-trash"></span>
-                    </button>
+                    <div id="d_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#delete-modal-inner">
+                      <span class="bi bi-trash"></span>
+                    </div>
                   </div>
                 {% else %}
                   <div class="del-container">
-                    <button id="r_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-report" data-bs-toggle="modal" data-bs-target="#report-modal-inner">
+                    <div id="r_{{ c.id }}" type="button" class="btn btn-secondary btn-sm btn-report" data-bs-toggle="modal" data-bs-target="#report-modal-inner">
                       <span class="oi oi-warning"></span>
-                    </button>
+                    </div>
                   </div>
                 {% endif %}
               {% endif %}

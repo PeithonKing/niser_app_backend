@@ -94,7 +94,7 @@ $('.btn-delete').click(function(e) {
         //console.log('foo');
         $.ajax({
             type: 'GET',
-            url: '/comm_del/' + id + '/',
+            url: '/arc/comm_del/' + id + '/',
             error: function(response, ts, et) {
                 console.log('error: ajax request to delete comment failed');
                 console.log(response);
