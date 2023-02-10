@@ -6,21 +6,26 @@
 
 {% block content %}
 
-<h2>{{ kind }} Items</h2>
+<div class="container m-3"><h2>{{ kind }} Items</h2></div>
 
 {% if items %}
 
-<dl>
-
-  {% for item in items %}
-    <dt>{{ item }}</dt>
-    <dd>
-      {{ item.desc }}
-      <a href="/lnf/item/{{ item.id }}">Details</a>
-    </dd>
-  {% endfor %}
-
-</dl>
+<div class="container">
+  <div class="row">
+    {% for item in items %}
+    <div class="col-lg-3 col-sm-7">
+      <div class="card h-100">
+        <img class="card-img-top" src="{{ item.image.url }}" alt="Card image cap" height="150">
+        <div class="card-body">
+          <h5 class="card-title">{{ item }}</h5>
+          <p class="card-text">{{ item.desc }}</p>
+          <a href="/lnf/item/{{ item.id }}" class="btn btn-dark" style="text-decoration: none;"><span style="color:white;">Details</span></a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 
 {% else %}
 <p>No unclaimed items here right now.</p>
