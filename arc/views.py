@@ -215,7 +215,7 @@ def file_view(request, source, fname):
         cnt.save()
         i = Item.objects.get(fl=fname)
         if request.user.is_authenticated:
-            update(fname, request.user.id)
+            update_recom(fname, request.user.id)
         return render(request, 'arc/file.html', {'item': i})
     except Item.DoesNotExist:
         raise Http404("File not found")

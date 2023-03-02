@@ -143,6 +143,10 @@ class UserReport(Report):
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target')
     typ = models.CharField('What\'s wrong?', max_length=2, choices=TYPE_CHOICES)
 
+class Recom(models.Model):
+    userid = models.CharField(max_length=4)
+    fname = models.CharField(max_length=50)
+    cnt = models.IntegerField(default=1)
 
 # Model to store seperately the no. of files accessed from recommendations
 # and no. of files from self browsing.
