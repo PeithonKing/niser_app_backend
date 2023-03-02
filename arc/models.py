@@ -46,7 +46,7 @@ class Course(models.Model):
         if self.appr == False:
             mail_admins(
                 subject = 'New Course Needs Approval.',
-                message = 'A new course "{}" was added by {} on the NISER Archive. It is pending approval.'.format(self, self.op))
+                message = f'A new course "{self}" was added by {self.op} on the NISER Archive. It is pending approval.')
 
         super().save(*args, **kwargs)
 
@@ -85,7 +85,7 @@ def gen_file_name(instance, filename):
     file_name = gen.genURL()
     while Item.objects.filter(fl__contains = file_name).count() > 0:
         file_name = gen.genURL()
-    return f"{file_name}.{ext}"
+    return f"static/arc/files/{file_name}.{ext}"
 
 class Item(models.Model):
     def __str__(self):

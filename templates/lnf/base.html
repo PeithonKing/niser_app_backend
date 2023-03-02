@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block head_ext %}
-    <link rel="stylesheet" type="text/css" href="{% static '/lnf/styles/awsm.css' %}">
+<!-- maybe ditch awsm alltogether -->
+<!--     <link rel="stylesheet" type="text/css" href="{% static '/lnf/styles/awsm.css' %}"> -->
     <link rel="stylesheet" type="text/css" href="{% static '/lnf/styles/main.css' %}">
     <title>
         {% block title %}{% endblock %} | Lost and Found
@@ -10,46 +11,44 @@
 {% endblock head_ext %}
 
 {% block app_template %}
-    <header>
-        <h1>Lost and Found</h1>
-        <p>
-            A place for posting and claiming items lost/found in NISER.
-        <nav>
-            <ul>
-                <li><a href="/lnf/">All</a></li>
-                <li><a href="/lnf/found/">Found</a></li>
-                <li><a href="/lnf/lost/">Lost</a></li>
-                <li><a href="/lnf/add/">Add Item</a></li>
-            </ul>
-        </nav>
 
-        <form action="{% url 'lnf-search' %}" method="GET">
-            <input type="text" name="keyword" placeholder="Search the database">
-        </form>
+<!--     overhaul by sugar-syrup -->
+    <div class="m-0 p-0">
+            <div class="container-fluid p-0 ">
+            <div class="row text-dark bg-light p-2"><h2 style="text-align: center;">Lost and Found</h2></div>
+            <div class="row text-dark bg-light p-1"><p style="text-align: center;">A place for posting and claiming items lost and found in NISER.</p></div>
+            <div class="row text-dark bg-light p-1">
+            <div class="col-7">
+                <nav>
+                <ul class="navbar-dark">
+                    <li class="nav-item"><a href="/lnf/" class="linkitem">All</a></li>
+                    <li class="nav-item"><a href="/lnf/lost" class="linkitem">Lost</a></li>
+                    <li class="nav-item"><a href="/lnf/found" class="linkitem">Found</a></li>
+                    <li class="nav-item"><a href="/lnf/add" class="linkitem">Add items</a></li>
+                </ul>
+                </nav>
+            </div>
+            <div class="col-3 p-2 offset-2" id="end">
+                <form action="{% url 'lnf-search' %}" method="GET">
+                <input type="text" name="keyword" placeholder="Search the database">
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
 
-    </header>
-
-    <main>
-        {% if messages %}
-        <ul class="messages">
-
-            {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                {{ message }}
-            </li>
-
-            {% endfor %}
-        </ul>
-
-        {% endif %}
-
-        {% block content %}{% endblock %}
-
-    </main>
-
-    <footer>
-        NISER Coding Club
-    </footer>
+    <div class="container border-top">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
 
     <script src="{% static '/lnf/scripts/main.js' %}"></script>
 
