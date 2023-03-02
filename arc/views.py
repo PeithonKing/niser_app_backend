@@ -195,7 +195,7 @@ def add_crs(request, abbrev):
                     crs = Course()
                     crs.code = form.cleaned_data['code'].lower()
                     crs.name = form.cleaned_data['name']
-                    crs.op = request.user
+                    crs.op = request.user.profile
                     crs.school = s
                     crs.save()
                     return render(request, 'arc/add-crs.html', {'crs': crs, 'success': True})
