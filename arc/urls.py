@@ -23,7 +23,7 @@ urlpatterns = [
 
     path('comm_del/<cid>/', delete_comment, name='delete_comment'),
 
-    path('f/<source>/<fname>', file_view, name='file'),
+    path('f/<source>/<path:fname>', file_view, name='file'),
 
     path('report/c/<cid>/', report_comment, name='report_comment'),
     path('report/i/<iid>/', report_item, name='report_item'),

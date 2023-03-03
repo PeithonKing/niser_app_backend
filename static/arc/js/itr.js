@@ -27,7 +27,7 @@ $('.btn-report').click(function() {
 
         $.ajax({
             type: 'POST',
-            url: '/report/c/'+id+'/',
+            url: '/arc/report/c/'+id+'/',
             data: formData,
             processData: false,
             contentType: false,
@@ -57,7 +57,7 @@ $('.btn-item-report').click(function() {
 
         $.ajax({
             type: 'POST',
-            url: '/report/i/'+id+'/',
+            url: '/arc/report/i/'+id+'/',
             data: formData,
             processData: false,
             contentType: false,
@@ -94,7 +94,7 @@ $('.btn-delete').click(function(e) {
         //console.log('foo');
         $.ajax({
             type: 'GET',
-            url: '/comm_del/' + id + '/',
+            url: '/arc/comm_del/' + id + '/',
             error: function(response, ts, et) {
                 console.log('error: ajax request to delete comment failed');
                 console.log(response);
@@ -116,7 +116,7 @@ $(document).ready(function(){
         setProgress(0);
         $.ajax({
             type: 'GET',
-            url: 'add/',
+            url: document.URL + 'add/',
             beforeSend: function() {
                 $('#item-modal-body-inner').html();
             },

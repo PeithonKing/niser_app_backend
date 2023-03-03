@@ -7,6 +7,8 @@ from django.dispatch import receiver
 
 import json
 
+from my_user.models import School, Course
+
 ITEM_TYPES = [
     ('a', 'Quiz'),
     ('b', 'Mid-Semester Exam'),
@@ -23,32 +25,6 @@ SEMS = [
     ('SU', 'Summer'),
     ('WI', 'Winter')
 ]
-
-class School(models.Model):
-    def __str__(self):
-        return self.name + ' ('+ self.abbr.upper() + ')'
-
-    abbr = models.CharField(max_length = 5)
-    name = models.CharField(max_length = 256)
-    appr = models.BooleanField(default=False)
-
-class Course(models.Model):
-    op = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    code    = models.CharField('Code', max_length=6, unique=True)
-    name    = models.CharField('Name', max_length=128)
-    school  = models.ForeignKey(School, on_delete=models.CASCADE)
-    appr = models.BooleanField(default=False)
-
-    def __str__(self):
-        return (self.code.upper() + ' - ' + self.name)
-
-    def save(self, *args, **kwargs):
-        if self.appr == False:
-            mail_admins(
-                subject = 'New Course Needs Approval.',
-                message = f'A new course "{self}" was added by {self.op} on the NISER Archive. It is pending approval.')
-
-        super().save(*args, **kwargs)
 
 
 class Itr(models.Model):
@@ -167,6 +143,10 @@ class UserReport(Report):
     target = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target')
     typ = models.CharField('What\'s wrong?', max_length=2, choices=TYPE_CHOICES)
 
+class Recom(models.Model):
+    userid = models.CharField(max_length=4)
+    fname = models.CharField(max_length=50)
+    cnt = models.IntegerField(default=1)
 
 # Model to store seperately the no. of files accessed from recommendations
 # and no. of files from self browsing.

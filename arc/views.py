@@ -73,15 +73,18 @@ def itr_view(request, cd, yr, sea):
         form = None
         form2 = CommentReportForm()
         form3 = ItemReportForm()
+        form4 = None
         if request.user is not None:
-            form = CommentForm()
+            form = ItemForm()
+            form4 = CommentForm()
         return render(request, 'arc/itr.html', {
             'itr': i,
             'item_list': items,
             'comm_list': comments,
             'form': form,
             'report_form': form2,
-            'item_report_form': form3
+            'item_report_form': form3,
+            'comment_form': form4
             })
     except Exception as e:
         raise e
@@ -189,9 +192,10 @@ def add_crs(request, abbrev):
                     return render(request, 'arc/add-crs.html',
                             {'exists': True, 'crs': crs})
                 except Course.DoesNotExist:
-                    crs =  form.save(commit=False)
-                    crs.code = crs.code.lower()
-                    crs.op = request.user
+                    crs = Course()
+                    crs.code = form.cleaned_data['code'].lower()
+                    crs.name = form.cleaned_data['name']
+                    crs.op = request.user.profile
                     crs.school = s
                     crs.save()
                     return render(request, 'arc/add-crs.html', {'crs': crs, 'success': True})
@@ -211,7 +215,7 @@ def file_view(request, source, fname):
         cnt.save()
         i = Item.objects.get(fl=fname)
         if request.user.is_authenticated:
-            update(fname, request.user.id)
+            update_recom(fname, request.user.id)
         return render(request, 'arc/file.html', {'item': i})
     except Item.DoesNotExist:
         raise Http404("File not found")

@@ -36,7 +36,7 @@
 
   {% endif %}
 
-  <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/" onsubmit="return false;">
+  <form id="itr-form" method="post" action="{% url 'course' crs.code %}add/">
     {% csrf_token %}
     {% for field in form %}
     <div class="form-group">
@@ -48,12 +48,13 @@
             </label>
           </div>
           <div class="col">
-            {% if field.help_text %}<a tabindex="0" role="button" type="button" class="btn btn-primary btn-circle-sm" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="{{ field.help_text }}"><span class="oi oi-info"></span></a> {% endif %}
+           <!-- {% if field.help_text %}<a tabindex="0" role="button" type="button" class="btn btn-primary btn-circle-sm" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" data-content="{{ field.help_text }}"><span class="oi oi-info"></span></a> {% endif %}-->
           </div>
         </div>
       </div>
       {{ field }}
     </div>
+    <br/>
     {% endfor %}
     <button class="btn btn-primary" type="submit">Submit</button>
   </form>
