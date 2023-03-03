@@ -35,3 +35,5 @@ class ItemForm(ModelForm):
         self.fields['category'].widget = forms.Select(
             choices=DEFAULT_CATEGORIES
         )
+        for field in self.fields:
+            self.fields[field].required = True
